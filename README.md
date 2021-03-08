@@ -1,28 +1,49 @@
-<h1 align="center"> socialite-feishu </h1>
+# Weixin
 
-<p align="center"> laravel socialite feishu provider.</p>
-
-
-## Installing
-
-```shell
-$ composer require cblink/socialite-feishu -vvv
+```bash
+composer require cblink/socialite-feishu -vvv
 ```
 
-## Usage
+## Installation & Basic Usage
 
-TODO
+Please see the [Base Installation Guide](https://socialiteproviders.com/usage/), then follow the provider specific instructions below.
 
-## Contributing
+### Add configuration to `config/services.php`
 
-You can contribute in one of three ways:
+```php
+'feishu' => [    
+  'client_id' => env('FEISHU_CLIENT_ID'),  
+  'client_secret' => env('FEISHU_CLIENT_SECRET'),  
+  'redirect' => env('FEISHU_REDIRECT_URI') 
+],
+```
 
-1. File bug reports using the [issue tracker](https://github.com/cblink/socialite-feishu/issues).
-2. Answer questions or fix bugs on the [issue tracker](https://github.com/cblink/socialite-feishu/issues).
-3. Contribute new features or update the wiki.
+### Add provider event listener
 
-_The code contribution process is not very formal. You just need to make sure that you follow the PSR-0, PSR-1, and PSR-2 coding guidelines. Any new code contributions must be accompanied by unit tests where applicable._
+Configure the package's listener to listen for `SocialiteWasCalled` events.
 
-## License
+Add the event to your `listen[]` array in `app/Providers/EventServiceProvider`. See the [Base Installation Guide](https://socialiteproviders.com/usage/) for detailed instructions.
 
-MIT
+```php
+protected $listen = [
+    \SocialiteProviders\Manager\SocialiteWasCalled::class => [
+        // ... other providers
+        'Cblink\\Socialite\\Feishu\\FeishuExtendSocialite@handle',
+    ],
+];
+```
+
+### Usage
+
+You should now be able to use the provider like you would regularly use Socialite (assuming you have the facade installed):
+
+```php
+return Socialite::driver('feishu')->redirect();
+```
+
+### Returned User fields
+
+- ``id``
+- ``unionid``
+- ``nickname``
+- ``avatar``
