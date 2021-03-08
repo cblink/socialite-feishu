@@ -2,8 +2,9 @@
 
 namespace Cblink\Socialite\Feishu;
 
-use Laravel\Socialite\Two\AbstractProvider;
-use Laravel\Socialite\Two\User;
+
+use SocialiteProviders\Manager\OAuth2\AbstractProvider;
+use SocialiteProviders\Manager\OAuth2\User;
 
 class Provider extends AbstractProvider
 {
@@ -36,7 +37,7 @@ class Provider extends AbstractProvider
     protected function getCodeFields($state = null)
     {
         return [
-            'appid'         => $this->clientId,
+            'app_id'         => $this->clientId,
             'redirect_uri' => $this->redirectUrl,
         ];
     }
@@ -75,12 +76,17 @@ class Provider extends AbstractProvider
     protected function mapUserToObject(array $user)
     {
         return (new User())->setRaw($user)->map([
-            'id'       => $user['openid'],
-            'unionid'  => $user['unionid'] ?? null,
+            'id'       => $user['open_id'],
+            'unionid'  => $user['union_id'] ?? null,
             'nickname' => $user['name'] ?? null,
-            'avatar'   => $user['avatar_url'] ?? null,
+            'avatar'   => $user['avatar_big'] ?? null,
             'name'     => $user['name'] ?? null,
             'email'    => $user['email'] ?? null,
+            'mobile'   => $user['mobile'] ?? null,
+            'token'   => $user['access_token'] ?? null,
+            'refreshToken'   => $user['refresh_token'] ?? null,
+            'expiresIn'   => $user['refresh_expires_in'] ?? null,
+            'tenant_key'   => $user['tenant_key'] ?? null,
         ]);
     }
 
