@@ -56,7 +56,7 @@ class Provider extends AbstractProvider
     protected function getUserByToken($token)
     {
         $response = $this->getHttpClient()->post('https://open.feishu.cn/open-apis/authen/v1/access_token', [
-            'query' => [
+            'json' => [
                 'grant_type' => 'authorization_code',
                 'code'       => $this->getCode(),
             ],
@@ -107,7 +107,7 @@ class Provider extends AbstractProvider
     public function getAccessTokenResponse($code)
     {
         $response = $this->getHttpClient()->post($this->getTokenUrl(), [
-            'query' => $this->getTokenFields($code),
+            'json' => $this->getTokenFields($code),
         ]);
 
         $body = json_decode($response->getBody(), true);
