@@ -96,8 +96,8 @@ class Provider extends AbstractProvider
     protected function getTokenFields($code)
     {
         return [
-            'appid' => $this->clientId,
-            'secret' => $this->clientSecret,
+            'app_id' => $this->clientId,
+            'app_secret' => $this->clientSecret,
         ];
     }
 
